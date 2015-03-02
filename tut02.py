@@ -1,11 +1,18 @@
 import random
 import string
+import os,os.path
 
 import cherrypy
 """
 This is a simple REST API, to be extended with API key/secret
 it is only a basic demonstration as illustrated in the cherrypy docs.
 """
+
+
+class StringGenerator(object):
+    @cherrypy.expose
+    def index(self):
+        return file('index.html')
 
 
 class StringGeneratorWebService(object):
@@ -30,12 +37,21 @@ class StringGeneratorWebService(object):
 
 if __name__ == '__main__':
     conf = {
-        '/': {
-            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
-            'tools.sessions.on': True,
-            'tools.response_headers.on': True,
-            'tools.response_headers.headers': [('Content-Type', 'text/plain')],
-        }
+         '/': {
+             'tools.sessions.on': True,
+             'tools.staticdir.root': os.path.abspath(os.getcwd())
+         },
+         '/generator': {
+             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+             'tools.response_headers.on': True,
+             'tools.response_headers.headers': [('Content-Type', 'text/plain')],
+         },
+         '/static': {
+             'tools.staticdir.on': True,
+             'tools.staticdir.dir': './public'
+         }
     }
-    cherrypy.quickstart(StringGeneratorWebService(), '/', conf)
+    webapp = StringGenerator()
+    webapp.generator = StringGeneratorWebService()
+    cherrypy.quickstart(webapp, '/', conf)
 

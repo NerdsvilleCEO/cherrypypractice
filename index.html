@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Simple AJAX CherryPy API Sample</title>
+</head>
+<body>
+    <h2 style="text-align:center">CherryPy API Tester</h2>
+    <p>Directions:<br/>
+       To use this API, you must replace the URL with the URL of the API endpoint, this webpage offers GET, PUT, POST and DELETE HTTP Methods</p>
+    <p><strong>GET</strong></p>
+      <br/>URL <input type="text" id="getURL" />
+      <input type="button" id="submitGet" value="Send GET" />
+      Response: <p id="get-string" />
+    <p><strong>POST</strong></p>
+      <br/>URL <input type="text" id="postURL" />
+      <br/>Params in format {"key":"value", "key2":"value2"}<input type="text" id="postParams" />
+      <input type="button" id="submitPOST" value="Send POST" />
+      <p id="post-string" />
+    <p><strong>PUT</strong></p>
+      <br/>URL <input type="text" id="putURL" />
+      <br/>Params in format {"key":"value", "key2":"value2"}<input type="text" id="putParams" />
+      <input type="button" id="submitPut" value="Send PUT" />
+      <p id="put-string" style="display:none;" />
+    <p><strong>DELETE</strong></p>
+      <br/>URL <input type="text" id="deleteURL" />
+      <br/>Params in format {"key":"value", "key2":"value2"}<input type="text" id="deleteParams" />
+      <input type="button" id="submitDelete" value="Send DELETE" />
+      <p id="delete-string" style="display:none;" />
+</body>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script type="text/javascript">
+    $('#submitGet').click(function(e){
+        var getURL = $("#getURL").val();
+        $.ajax({
+            type: "GET",
+            url: getURL
+        }).done(function(string) {
+                    $("#get-string").show();
+                    $("#get-string").val(string);
+                });
+        e.preventDefault();
+    });
+    $('#submitPOST').click(function(e){
+        var postURL = $("#postURL").val();
+        var postParams = JSON.parse($("#postParams")[0].value)
+        $.ajax({
+            type: "POST",
+            url: postURL,
+            data: postParams
+        }).done(function(string) {
+                    $("#post-string").show();
+                    $("#post-string").val(string);
+                });
+        e.preventDefault();
+    });
+        $('#submitPut').click(function(e){
+        var putURL = $("#putURL").val();
+        var putParams = JSON.parse($("#putParams")[0].value)
+        $.ajax({
+            type: "PUT",
+            url: putURL,
+            data: putParams
+        }).done(function(string) {
+                    $("#put-string").show();
+                    $("#put-string").val(string);
+                });
+        e.preventDefault();
+    });
+        $('#submitDelete').click(function(e){
+        var deleteURL = $("#deleteURL").val();
+        var deleteParams = JSON.parse($("#deleteParams")[0].value)
+        $.ajax({
+            type: "DELETE",
+            url: deleteURL,
+            data: deleteParams
+        }).done(function(string) {
+                    $("#delete-string").show();
+                    $("#delete-string").val(string);
+                });
+        e.preventDefault();
+    });
+</script>
+</html>
